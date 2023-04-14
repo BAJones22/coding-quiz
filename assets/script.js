@@ -1,184 +1,154 @@
-//start section
-let start = document.querySelector("#start");
+// Questions/Answers List
+var questionList = [
+  {
+    questionText: "Commonly used data types do NOT include:",
+    choices: ["strings", "booleans", "alerts", "numbers"],
+    correctAnswer: "alerts",
+  },
 
-//quiz rules section
-let rules = document.querySelector("#rules");
-let continueBtn = document.querySelector("#continue");
+  {
+    questionText: "The condition in an if/else statement is enclosed with:",
+    choices: ["quotes", "curly brackets", "parenthesis", "square brackets"],
+    correctAnswer: "parenthesis",
+  },
 
-//quiz section
-let quiz = document.querySelector("#quiz");
-let time = document.querySelector("#time");
+  {
+    questionText: "Arrays in JavaScript can be used to store:",
+    choices: [
+      "numbers and strings",
+      "other arrays",
+      "booleans",
+      "all of the above",
+    ],
+    correctAnswer: "all of the above",
+  },
 
-//question section
-let questionNo = document.querySelector("#questionNo");
+  {
+    questionText:
+      "When being assigned to variables, string values must be enclosed within:",
+    choices: ["commas", "curly brackets", "quotes", "parenthesis"],
+    correctAnswer: "quotes",
+  },
 
-//question answers section
-let option1 = document.querySelector("#option1");
-let option2 = document.querySelector("#option2");
-let option3 = document.querySelector("#option3");
-let option4 = document.querySelector("#option4");
+  {
+    questionText:
+      "A very useful tool used during development and debugging for printing content to the debugger is:",
+    choices: ["JavaScript", "terminal/bash", "for loops", "console.log"],
+    correctAnswer: "console.log",
+  },
+];
 
-//correct and next button
-let total_correct = document.querySelector("#total_correct");
-let next_question = document.querySelector("#next_question");
+var questionTextElement = document.getElementById("question-text");
+var choicesContainerElement = document.getElementById("choices-container");
+var questionContainerElement = document.getElementById("question-container");
+var answerContainerElement = document.getElementById("answer-container");
+var resetButton = document.getElementById("reset");
 
-//result section
-let result = document.querySelector("#result");
-let points = document.querySelector("#points");
-let initials = document.querySelector("#initials");
-
-//get all 'H4' from quiz section
-let choice_que = document.querySelectorAll(".choice_que");
-
-
-let index = 0;
-let timer = 0;
-let interval = 0;
-
-//total points
-
-let correct = 0;
-
-//store Answer Value
-let UserAns = undefined;
-
-//click start button function
-start.addEventListener("click" , ()=>{
-    start.style.display = "none";
-    rules.style.display = "block";
-});
-
-//quiz timer
-let countDown = ()=>{
-    if(timer === 60)
-    {
-        clearInterval(interval);
-        next_question.click();
-    }
-    else
-        {
-        timer++;
-        time.innerText = timer;
-        }
+function resetQuiz() {
+  currentQuestionIndex = 0;
+  seconds = 60;
+  clearInterval(timer);
+  document.getElementById("timer").innerHTML = "1:00";
+  updateQuestion(currentQuestionIndex);
 }
 
-//setInterval(countDown, 1000);
+function main() {
+  function updateQuestion(index) {
+    questionTextElement.textContent = questionList[index].questionText;
+    answerContainerElement.innerHTML = "";
+    for (var i = 0; i < questionList[index].choices.length; i++) {
+      var newChoiceButton = document.createElement("button");
+      newChoiceButton.textContent = questionList[index].choices[i];
+      answerContainerElement.appendChild(newChoiceButton);
+      newChoiceButton.addEventListener("click", handleButtonClick);
+    }
+  }
 
-let MCQS = [{
-    question: "Commonly used data types do NOT include:",
-choice1: "<strings>",
-choice2: "<booleans>",
-choice3: "<alerts>",
-choice4: "<numbers>",
-answer: 2
-},
+  // Initialize the quiz
+  var currentQuestionIndex = 0;
+  updateQuestion(currentQuestionIndex);
 
+  function handleButtonClick(event) {
+    var userAnswer = event.target.textContent;
+    var correctAnswer = questionList[currentQuestionIndex].correctAnswer;
+    if (userAnswer === correctAnswer) {
+    } else {
+      seconds -= 10; // deduct 10 seconds from the timer
+    }
+    currentQuestionIndex++;
+  
+    if (currentQuestionIndex === questionList.length || seconds === 0) {
+      console.log("Quiz complete!");
+      clearInterval(timer); // stop the timer when the quiz is complete
+      var finalScore = seconds;
+      var initials = prompt(
+        "Quiz Complete! Your final score is " +
+          finalScore +
+          ". Please enter your initials for the high score list."
+      );
+      if (initials) {
+        // save the high score with the initials
+        console.log("High score saved: " + initials + " - " + finalScore);
+      }
+      currentQuestionIndex = 0;
+      seconds = 60; // reset the timer to 60 seconds
+      document.getElementById("timer").innerHTML = "1:00"; // reset the timer display
+      updateQuestion(currentQuestionIndex); // reset the quiz
+      window.location.href = "index.html"; // redirect to the start page
+    } else {
+      updateQuestion(currentQuestionIndex);
+    }
+  }
+  
 
-{
-    question: "The condition in an if/else statement is enclosed with:",
-choice1: "<quotes>",
-choice2: "<curly brackets>",
-choice3: "<parenthesis>",
-choice4: "<square brackets>",
-answer: 2
-},
+  // Attach event listeners to the answer buttons
+  var answerButtons = answerContainerElement.querySelectorAll("button");
+  answerButtons.forEach(function (button) {
+    button.addEventListener("click", handleButtonClick);
+  });
 
-{
-    question: "Arrays in JavaScript can be used to store:",
-choice1: "<numbers and strings>",
-choice2: "<other arrays>",
-choice3: "<booleans>",
-choice4: "<all of the above>",
-answer: 3
-},
-
-{
-    question: "When being assigned to variables, string values must be enclosed within:",
-choice1: "<commas>",
-choice2: "<curly brackets>",
-choice3: "<quotes>",
-choice4: "<parenthesis>",
-answer: 2
-},
-
-{
-    question: "A very useful tool used during development and debugging for printing content to the debugger is:",
-choice1: "<JavaScript>",
-choice2: "<terminal/bash>",
-choice3: "<for loops>",
-choice4: "<console.log>",
-answer: 2
-}]
-
-
-
-
-let loadData = ()=>{
-    questionNo.innerText = index + 1 + ". ";
-    questionText.innerText = MCQS[index].question;
-    option1.innerText = MCQS[index].choice1;
-    option2.innerText = MCQS[index].choice2;
-    option3.innerText = MCQS[index].choice3;
-    option4.innerText = MCQS[index].choice4;
-
-    //timer start
-    timer = 0;
+  // Add a loop to create buttons for each question in the list
+  var questionButtonContainer = document.getElementById(
+    "question-button-container"
+  );
+  questionList.forEach(function (question, index) {
+    var newQuestionButton = document.createElement("button");
+    newQuestionButton.textContent = "Question " + (index + 1);
+    newQuestionButton.addEventListener("click", function () {
+      currentQuestionIndex = index;
+      updateQuestion(currentQuestionIndex);
+    });
+  });
 }
 
-loadData();
+let container = document.querySelector("#container");
 
-//click continue button function
-continueBtn.addEventListener("click" , ()=>{
-    quiz.style.display = "block";
-    rules.style.display = "none";
+// Set timer
+var seconds = 60;
+var timer;
+function myFunction() {
+  if (seconds < 60) {
+    document.getElementById("timer").innerHTML = seconds;
+  }
+  if (seconds > 0) {
+    seconds--;
+  } else {
+    clearInterval(timer);
+  }
+}
 
-    interval = setInterval(countDown, 1000);
-    loadData();
+document.getElementById("start").onclick = function () {
+  if (!timer) {
+    timer = window.setInterval(function () {
+      myFunction();
+    }, 1000);
+  }
+  main();
+};
 
-    choice_que.forEach(removeActive =>{
-        removeActive.classList.remove("active");
-    })
+document.getElementById("timer").innerHTML = "1:00";
+
+start.addEventListener("click", () => {
+  start.style.display = "none";
+  container.style.display = "none";
 });
-
-choice_que.forEach( (choices, choiceNo) =>{
-    choices.addEventListener("click" , ()=>{
-        choices.classList.add("active");
-        //check answer
-        if(choiceNo === MCQS[index].answer)
-        {
-            correct++;
-        }
-        else
-            {
-                correct += 0;
-            }
-        clearInterval(interval);
-
-        for(i=0; i <= 3; i++)
-        {
-            choice_que[i].classList.add("disabled");
-        }
-    })
-});
-
-//click next button function
-next_question.addEventListener("click", () => {
-    if (index !== MCQS.length - 1) {
-        index++;
-        choice_que.forEach(removeActive => {
-            removeActive.classList.remove("active");
-        })
-
-        loadData();
-
-        clearInterval(interval);
-    }
-    else
-    {
-        index = 0;
-    }
-    for(i=0; i <= 3; i++)
-    {
-        choice_que[i].classList.remove("disabled");
-    }
-})

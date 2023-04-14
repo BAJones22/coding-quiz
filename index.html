@@ -5,61 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/style.css">
-    <script src="https://kit.fontawesome.com/48b6eafc4c.js" crossorigin="anonymous"></script>
-    <title>Challenge Quiz</title>
+    <title>Coding Quiz</title>
 </head>
 <body>
     <div id="container">
-        <div id="start">Start Quiz</div>    
-        
-        
-    <div id="rules">
-        <h2>Quiz Challenge Rules</h2>
-        <h3>1. Answer each question as quickly as possible</h3>
-        <h3>2. Each question answered incorrectly will deduct 10 seconds from the timer</h3>
-        <h3>3. Quiz ends when all questions are answered or the timer has run out</h3>
-        <h3>4. After a question has been answered, the answer cannot be changed</h3>
-        <h3>5. Once finished with the quiz save your high score</h3>
-        <div id="button">
-            <button id="continue">Continue</button>
-        </div>
-    </div>
+    <h1>Coding Quiz Challenge</h1>
+    <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+    <div id="start">Start Quiz</div>
+</div>   
 
-    <div id="quiz">
-        <div id="quiz_header">
-            <h4>Coding Quiz</h4>
-            <div id="timer">
-                <h5>Time Left:</h5>
-                <h5 id="time">00</h5>
-            </div>
-        </div>
-    
+<section>
+    <div id="quiz-container"></div>
+    <div id="question-container"></div>
+        <div id = "question-text"></div>
+    <div id="answer-container"></div>
+</section>
 
-<div id="question">
-    <h2 id="questionNo"></h2>
-    <h2 id="questionText"></h2> 
-</div>
-
-<div id="optionList">
-    <h3 class="choice_que" id="option1"></h3>
-    <h3 class="choice_que" id="option2"></h3>
-    <h3 class="choice_que" id="option3"></h3>
-    <h3 class="choice_que" id="option4"></h3>
-</div>
-
-<div id="answersSection">
-    <h3 id="next_question">Next</h3>
-</div>
-
-
-<div id="result">
-    <h4>You have completed the quiz!</h4>
-    <i class="fa-solid fa-trophy"></i>
-    <h4 id="points">Your score is 76 points</h4>
-    <button id="initials">Enter High Score</button>
-</div>
-</div>
-    </div>
-    <script src="assets/script.js"></script>
+<div id="timer"></div>
+      
+    <script src="assets/script.js"></script>    
 </body>
 </html>
